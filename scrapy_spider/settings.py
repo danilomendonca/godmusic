@@ -91,11 +91,3 @@ MONGO_DATABASE = 'godmusic'
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-
-CONNECTION_STRING = "mysql://{user}:{passwd}@{host}:{port}/{db_name}?charset=utf8".format(
-    user="root",
-    passwd="start",
-    host="192.168.1.2",
-    port="3306",
-    db_name="quote_toscrape",
-)
