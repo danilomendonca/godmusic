@@ -36,8 +36,11 @@ class LifeGateSpider(scrapy.Spider):
                         sel = scrapy.Selector(text=self.driver.page_source)
                         item = self.parse_iframe(sel.css('body')[0])
                         self.driver.switch_to.default_content()
-                        time.sleep(3 * 60)
-                        yield item
+                        if item is not None:
+                            time.sleep(3 * 60)
+                            yield item
+                        else:
+                            time.sleep(5)
                 except KeyboardInterrupt:
                     print('Interrupted!')
             index = index + 1
@@ -53,11 +56,14 @@ class LifeGateSpider(scrapy.Spider):
         artist = songinfo.xpath(".//li[@id='artist']/text()").extract_first()
         title = songinfo.xpath(".//li[@id='title']/text()").extract_first()
         album = songinfo.xpath(".//li[@id='album']/text()").extract_first()
-        item = MusicItem()
-        item["title"] = title
-        item["artist"] = artist
-        item["last_updated"] = datetime.datetime.utcnow()
-        print("####################################################")
-        print("Artist: " + artist + " | Title: " + title)
-        print("####################################################")
-        return item
+        try:
+            item = MusicItem()
+            item["title"] = title
+            item["artist"] = artist
+            item["last_updated"] = datetime.datetime.utcnow()
+            print("####################################################")
+            print("Artist: " + artist + " | Title: " + title)
+            print("####################################################")
+            return item
+        except Exception:
+            return None
